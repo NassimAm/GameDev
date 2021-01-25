@@ -1,0 +1,24 @@
+#version 330 core
+
+layout (location = 0) in vec2 aPos;
+
+out vec4 clipSpace;
+out vec2 TextCoords;
+out vec3 toCameraVec;
+
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+
+uniform vec3 ViewPos;
+
+const float tiling = 4.0;
+
+void main()
+{
+	vec4 WorldPos = model * vec4(aPos.x,0.0,aPos.y,1.0);
+	clipSpace = projection * view * model * WorldPos;
+	gl_Position = clipSpace;
+	TextCoords = vec2(aPos.x/2.0 + 0.5,aPos.y/2.0 + 0.5) * tiling;
+	toCameraVec = ViewPos - WorldPos.xyz;
+}

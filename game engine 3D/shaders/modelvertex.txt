@@ -1,0 +1,36 @@
+#version 330 core
+
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aTextCoords;
+
+out vec3 Normal;
+out vec3 FragPos;
+out vec2 TextCoords;
+out float visibility;
+
+uniform mat4 projection,view,model;
+
+uniform vec4 plane;
+
+const float density = 0.007;
+const float gradient = 1.5;
+
+void main()
+{
+	
+	vec4 WorldPos = projection * view * model * vec4(aPos,1.0);
+	vec4 PosToCam = view * model * vec4(aPos,1.0);
+
+	gl_Position = WorldPos;
+	
+	gl_ClipDistance[0] = dot(model * vec4(aPos,1.0),plane);
+	
+	FragPos = vec3(model*vec4(aPos,1.0));
+	Normal = mat3(transpose(inverse(model))) * aNormal; 
+	TextCoords = aTextCoords;
+	
+	float distance = length(PosToCam.xyz);
+	visibility = exp(-pow((distance*density),gradient));
+	visibility = clamp(visibility,0.0,1.0);
+}

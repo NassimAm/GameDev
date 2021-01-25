@@ -1,0 +1,64 @@
+#version 330 core
+
+in vec3 Normal;
+in vec3 FragPos;
+in vec2 TextCoords;
+in float visibility;
+out vec4 FragColor;
+
+struct DirLight
+{
+	vec3 direction;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+
+uniform vec3 ViewPos;
+uniform DirLight sun;
+uniform sampler2D blendMap;
+uniform sampler2D backgroundTexture;
+uniform sampler2D rTexture;
+uniform sampler2D gTexture;
+uniform sampler2D bTexture;
+
+
+vec3 CalculateDirLight(DirLight dirlight,vec3 CameraDir,vec3 NormalVec,vec4 terraintexture);
+
+void main()
+{
+	vec2 TiledCoords = TextCoords*50.0f;
+	vec4 BlendColor = texture(blendMap,TextCoords);
+	float BackgroundAmount = 1.0 - (BlendColor.r+BlendColor.g+BlendColor.b);
+	
+	vec4 BackgroundColor = texture(backgroundTexture,TiledCoords) * BackgroundAmount;
+	vec4 rColor = texture(rTexture,TiledCoords) * BlendColor.r;
+	vec4 gColor = texture(gTexture,TiledCoords) * BlendColor.g;
+	vec4 bColor = texture(bTexture,TiledCoords) * BlendColor.b;
+	
+	
+	vec3 result;
+	vec3 ViewDir = normalize(ViewPos-FragPos);
+	vec3 norm = normalize(Normal);
+	vec4 emissionlight = BackgroundColor + rColor + gColor + bColor;
+
+	result = CalculateDirLight(sun,ViewDir,norm,emissionlight);
+	
+	FragColor = vec4(result,1.0f);
+	FragColor = mix(vec4(0.6f,0.6f,1.0f,1.0f),FragColor,visibility);
+}
+
+vec3 CalculateDirLight(DirLight dirlight,vec3 CameraDir,vec3 NormalVec,vec4 terraintexture)
+{
+	vec3 LightDir = normalize(-dirlight.direction);	
+
+	float diff = max(dot(NormalVec,LightDir),0.0f);
+	vec3 reflection = reflect(-LightDir,NormalVec);
+	float spec = pow(max(dot(CameraDir,reflection),0.0f),32.0f);
+	
+	vec3 ambient = dirlight.ambient * vec3(terraintexture);
+	vec3 diffuse = diff*dirlight.diffuse * vec3(terraintexture);
+	vec3 specular = spec * dirlight.specular * vec3(1.0);
+
+	return ambient+diffuse+specular;
+}

@@ -1,0 +1,63 @@
+#version 330 core
+
+in vec3 Normal;
+in vec3 FragPos;
+in vec2 TextCoords;
+in float visibility;
+
+out vec4 FragColor;
+
+struct DirLight
+{
+	vec3 direction;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+
+struct Material
+{
+	sampler2D texture_diffuse1;
+	sampler2D texture_diffuse2;
+	sampler2D texture_diffuse3;
+	sampler2D texture_diffuse4;
+	sampler2D texture_specular1;
+	sampler2D texture_specular2;
+	sampler2D texture_specular3;
+	sampler2D texture_specular4;
+	sampler2D texture_emission;
+	float shininess;
+};
+
+uniform vec3 ViewPos;
+uniform DirLight sun;
+uniform Material material;
+
+vec3 CalculateDirLight(DirLight dirlight,vec3 CameraDir,vec3 NormalVec,Material thematerial);
+
+void main()
+{
+	vec3 result;
+	vec3 ViewDir = normalize(ViewPos-FragPos);
+	vec3 norm = normalize(Normal);
+
+	result = CalculateDirLight(sun,ViewDir,norm,material);
+	
+	FragColor = vec4(result,1.0f);
+	FragColor = mix(vec4(0.6f,0.6f,1.0f,1.0f),FragColor,visibility);	
+}
+
+vec3 CalculateDirLight(DirLight dirlight,vec3 CameraDir,vec3 NormalVec,Material thematerial)
+{
+	vec3 LightDir = normalize(-dirlight.direction);	
+
+	float diff = max(dot(NormalVec,LightDir),0.0f); 
+	vec3 reflection = reflect(-LightDir,NormalVec); 
+	float spec = pow(max(dot(CameraDir,reflection),0.0f),32.0);
+	
+	vec3 ambient = dirlight.ambient * vec3(mix(texture(thematerial.texture_diffuse1,TextCoords),texture(thematerial.texture_diffuse2,TextCoords),0.5f));
+	vec3 diffuse = diff * dirlight.diffuse * vec3(mix(texture(thematerial.texture_diffuse1,TextCoords),texture(thematerial.texture_diffuse2,TextCoords),0.5f));
+	vec3 specular = spec * dirlight.specular * vec3(mix(texture(thematerial.texture_specular1,TextCoords),texture(thematerial.texture_specular2,TextCoords),0.5f));
+	//vec3 specular = spec * dirlight.specular * vec3(1.0);
+	return ambient+diffuse+specular;
+}

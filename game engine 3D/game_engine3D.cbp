@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="game_engine3D" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/game_engine3D" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/physics simulator" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="Player/Camera.cpp" />
+		<Unit filename="Player/Camera.h" />
+		<Unit filename="Player/Player.cpp" />
+		<Unit filename="Player/Player.h" />
+		<Unit filename="entity/Entity.cpp" />
+		<Unit filename="entity/Entity.h" />
+		<Unit filename="glad.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gui/GuiRenderer.cpp" />
+		<Unit filename="gui/GuiRenderer.h" />
+		<Unit filename="gui/GuiShader.cpp" />
+		<Unit filename="gui/GuiShader.h" />
+		<Unit filename="gui/GuiTexture.h" />
+		<Unit filename="light/Lighting.cpp" />
+		<Unit filename="light/Lighting.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="model/Rawmodel.h" />
+		<Unit filename="model/Texturedmodel.h" />
+		<Unit filename="modelobj/Importer.cpp" />
+		<Unit filename="modelobj/Mesh.h" />
+		<Unit filename="modelobj/Model.h" />
+		<Unit filename="modelobj/ModelLoader.cpp" />
+		<Unit filename="modelobj/ModelLoader.h" />
+		<Unit filename="pngLoader/lodepng.cpp" />
+		<Unit filename="pngLoader/lodepng.h" />
+		<Unit filename="pngLoader/pngImage.cpp" />
+		<Unit filename="pngLoader/pngImage.h" />
+		<Unit filename="render_engine/EntityRenderer.cpp" />
+		<Unit filename="render_engine/EntityRenderer.h" />
+		<Unit filename="render_engine/Loader.cpp" />
+		<Unit filename="render_engine/Loader.h" />
+		<Unit filename="render_engine/MainRenderer.cpp" />
+		<Unit filename="render_engine/MainRenderer.h" />
+		<Unit filename="render_engine/TerrainRenderer.cpp" />
+		<Unit filename="render_engine/TerrainRenderer.h" />
+		<Unit filename="shaders/Shader.cpp" />
+		<Unit filename="shaders/Shader.h" />
+		<Unit filename="shaders/TerrainShader.cpp" />
+		<Unit filename="shaders/TerrainShader.h" />
+		<Unit filename="stb_image.h" />
+		<Unit filename="std_image.cpp" />
+		<Unit filename="terrain/Terrain.cpp" />
+		<Unit filename="terrain/Terrain.h" />
+		<Unit filename="texture/Modeltexture.h" />
+		<Unit filename="texture/Terraintexture.h" />
+		<Unit filename="texture/TerraintexturePack.h" />
+		<Unit filename="water/WaterFrameBuffers.cpp" />
+		<Unit filename="water/WaterFrameBuffers.h" />
+		<Unit filename="water/WaterPlane.h" />
+		<Unit filename="water/WaterRenderer.cpp" />
+		<Unit filename="water/WaterRenderer.h" />
+		<Unit filename="water/WaterShader.cpp" />
+		<Unit filename="water/WaterShader.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
